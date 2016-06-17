@@ -99,7 +99,7 @@ public class DaoImpl implements Dao {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, parentNum);
 			rs = pstmt.executeQuery();
-			if(rs.next())
+			while(rs.next())
 			{
 				list.add(new Article(rs.getInt(1), rs.getDate(2), 
 						rs.getString(3), rs.getString(4), 

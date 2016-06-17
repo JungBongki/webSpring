@@ -41,7 +41,6 @@
 <input type="hidden" name ="parent" value="${a.num }">
 <input type="hidden" name ="writer" value="${sessionScope.id }">
 <input type="hidden" name ="title" value=" ->>${a.title }">
-<input type="hidden" name ="content" value=" ->>${a.title }">
 <input type="submit" value ="´ñ±Û ´Þ±â">
 </form>
 <h3>´ñ±Û¸ñ·Ï</h3>
