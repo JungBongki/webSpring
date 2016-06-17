@@ -21,7 +21,7 @@ public class DaoImpl implements Dao {
 
 	@Override
 	public void insert(Article a) {
-		String sql = "insert into board values(seq_board.nextval, sysdate, ?, ?, ?, 0)";
+		String sql = "insert into board values(seq_board.nextval, sysdate, ?, ?, ?, ?)";
 		PreparedStatement pstmt = null;
 		try {
 			conn = dataSource.getConnection();
@@ -29,6 +29,7 @@ public class DaoImpl implements Dao {
 			pstmt.setString(1, a.getWriter());
 			pstmt.setString(2, a.getTitle());
 			pstmt.setString(3, a.getContent());
+			pstmt.setInt(4, a.getParent());
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();

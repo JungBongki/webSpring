@@ -36,6 +36,23 @@
 	<input type = "button" value = "수정" onclick = 'location.href="${pageContext.request.contextPath}/board/revise.do?num=${a.num}"'/><br>
 </c:if>
 </form>
+<form action = "${pageContext.request.contextPath }/board/write.do" method = "POST">
+<input type="text" name = "content">
+<input type="hidden" name ="parent" value="${a.num }">
+<input type="hidden" name ="writer" value="${sessionScope.id }">
+<input type="hidden" name ="title" value=" ->>${a.title }">
+<input type="hidden" name ="content" value=" ->>${a.title }">
+<input type="submit" value ="댓글 달기">
+</form>
+<h3>댓글목록</h3>
+<table border="1">
+<tr><th>작성자</th><th>내용</th></tr>
+<c:forEach var="rep" items="${reps }">
+<tr><td>${rep.writer }</td><td>
+<a href="${pageContext.request.contextPath }/board/read.do?num=
+${rep.num}">${rep.content }</a></td></tr>
+</c:forEach>
+</table>
 <input type = "button" value = "뒤로가기" onclick = 'location.href = "${pageContext.request.contextPath}/board/list.do"' /><br>
 </body>
 </html>
