@@ -85,7 +85,7 @@ public class BoardController {
 	
 	@RequestMapping(value="/board/searchById.do") // 작성자로 게시물검색
 	public ModelAndView selectById(@RequestParam(value="writer")String writer){
-		ModelAndView mav = new ModelAndView("board/searchIdResult");
+		ModelAndView mav = new ModelAndView("board/searchByResult");
 		ArrayList<Article> list = (ArrayList<Article>)service.getArticleByWriter(writer);
 		mav.addObject("list", list);
 		return mav;
