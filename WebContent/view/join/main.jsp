@@ -16,5 +16,7 @@ ${sessionScope.id }님 로그인 중.... <br>
 탈퇴</a><br>
 <a href="${pageContext.request.contextPath }/board/list.do">
 게시판</a>
+<a href="${pageContext.request.contextPath }/imgBoard/list.do">
+이미지게시판</a>
 </body>
 </html>

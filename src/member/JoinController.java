@@ -38,10 +38,10 @@ public class JoinController {
 	
 	@RequestMapping(value="/join/login.do")
 	public String login(Join j, HttpServletRequest req){
+		System.out.println("WErtwerwrwe");
 		HttpSession session = null;
 		String result = "join/loginForm";
 		boolean flag = service.login(j); // 로그인의 성공실패를 따진다.
-		System.out.println(flag);
 		if(flag){
 			session = req.getSession();
 			session.setAttribute("id", j.getId());

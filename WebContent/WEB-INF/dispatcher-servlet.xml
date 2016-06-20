@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:p="http://www.springframework.org/schema/p"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+      http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
 
 	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="prefix" value="/view/"></property> <!-- 여기에 포함된 폴더명을 적는다. -->
-		<property name="suffix" value=".jsp"></property> <!-- 여기에 접속할 jsp페이지를입력한다. -->
-	</bean> <!-- View페이지를 만들어서 뿌려주는 역할 -->
-	
-	<bean class="org.springframework.jdbc.datasource.DriverManagerDataSource"
-		id="dataSource">
-		<property name="driverClassName"> <!-- getParameter와 같은역할을 한다. -->
+		<property name="prefix" value="/view/"></property>
+		<property name="suffix" value=".jsp"></property>
+	</bean>
+
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName">
 			<value>oracle.jdbc.driver.OracleDriver</value>
 		</property>
 		<property name="url">
@@ -25,72 +26,59 @@
 			<value>hr</value>
 		</property>
 	</bean>
-<!-- 
 	<bean id="addrDao" class="addr.DaoImpl">
 		<property name="dataSource">
 			<ref bean="dataSource" />
 		</property>
 	</bean>
 
-	<bean id="AddrService" class="addr.ServiceImpl" p:dao-ref="addrDao"/>
+	<bean id="addrService" class="addr.ServiceImpl" p:dao-ref="addrDao" />
+	<bean id="addrController" class="addr.AddrController"
+		p:service-ref="addrService" />
 
-	<bean id="AddrController" class="addr.AddrController">
-		<property name="service">
-			<ref bean="AddrService" />
+	<bean id="testController" class="test.TestController" />
+
+	<bean id="joinDao" class="member.DaoImpl" p:dataSource-ref="dataSource" />
+	<bean id="joinService" class="member.ServiceImpl" p:dao-ref="joinDao" />
+	<bean id="joinController" class="member.JoinController"
+		p:service-ref="joinService" />
+
+	<bean id="boardDao" class="board.DaoImpl" p:dataSource-ref="dataSource" />
+	<bean id="boardService" class="board.ServiceImpl" p:dao-ref="boardDao" />
+	<bean id="boardController" class="board.BoardController"
+		p:service-ref="boardService" />
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
+	
+	<bean class="imgBoard_img.ImgDaoImpl" id="imgDao">
+		<property name="dataSource">
+			<ref bean="dataSource" />
 		</property>
 	</bean>
-	
- -->	<bean id = "testController" class = "test.TestController"/>
-	
-	<!-- <bean id="memberDao" class="member.DaoImpl">
+	<bean class="imgBoard_rep.RepDaoImpl" id="repDao">
 		<property name="dataSource">
 			<ref bean="dataSource" />
 		</property>
 	</bean>
 
-	<bean id="memberService" class="member.ServiceImpl" p:dao-ref="memberDao"/>
-
-	<bean id="JoinController" class="member.JoinController">
-		<property name="service">
-			<ref bean="memberService" />
-		</property>
-	</bean> -->
-
-	 <bean id="memberDao" class="member.DaoImpl">
-		<property name="dataSource">
-			<ref bean="dataSource" />
-		</property>
-	</bean>
-	<bean id="memberService" class="member.ServiceImpl">
+	<bean class="imgBoard_img.ServiceImpl" id="imgService">
 		<property name="dao">
-			<ref bean="memberDao" />
-		</property>
-	</bean>
-		<bean id="JoinController" class="member.JoinController">
-		<property name="service">
-			<ref bean="memberService" />
-		</property>
-	</bean>
-	
-	<bean id = "myController" class="ModelAttributeTest.MyController"/>
-	<bean id = "gameSearchController" class="ModelAttributeTest.GameSearchController"/>
-	
-	<bean id="boardDao" class="board.DaoImpl">
-		<property name="dataSource">
-			<ref bean="dataSource" />
+			<ref bean="imgDao" />
 		</property>
 	</bean>
 
-	<bean id="boardService2" class="board.ServiceImpl">
+	<bean class="imgBoard_rep.ServiceImpl" id="repService">
 		<property name="dao">
-			<ref bean="boardDao" />
+			<ref bean="repDao" />
 		</property>
 	</bean>
 
-	<bean id="BoardController" class="board.BoardController">
-		<property name="service">
-			<ref bean="boardService2" />
+	<bean class="imgBoard.ImgBoardController" id="imgBoardController">
+		<property name="imgService">
+			<ref bean="imgService" />
+		</property>
+		<property name="repService">
+			<ref bean="repService" />
 		</property>
 	</bean>
-	
 </beans>
