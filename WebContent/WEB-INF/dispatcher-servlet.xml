@@ -5,10 +5,18 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
 
+
+	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver">
+		<property name="order" value="0"/>
+	</bean>
+	<bean id= "download" class="download.DownloadView"/>
+	<bean id= "downloadController" class ="download.DownloadController"/>
+
 	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/view/"></property>
 		<property name="suffix" value=".jsp"></property>
+		<property name="order" value = "1"/>
 	</bean>
 
 	<bean id="dataSource"
@@ -81,4 +89,5 @@
 			<ref bean="repService" />
 		</property>
 	</bean>
+	
 </beans>
