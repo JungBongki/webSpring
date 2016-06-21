@@ -52,15 +52,22 @@ public class ImgBoardController {
 		return mav;
 	}
 	
-	@RequestMapping(value="/imgBoard/addrep.do")
-	public String addrep(ImgRep ir){
+	@RequestMapping(value="/imgBoard/writeRep.do")
+	public ModelAndView addrep(ImgRep ir){
+		ModelAndView mav = new ModelAndView("imgBoard/writeRep");
 		repService.addRep(ir);
-		return "redirect:/imgBoard/list.do";
+		ArrayList<ImgRep> list = repService.getAll(ir.getImgNum());
+		mav.addObject("list", list);
+		return mav;
 	}
 	
-	@RequestMapping(value="/imgBoard/delete_rep.do")
-	public String delete_rep(@RequestParam(value="num") int num){
+	@RequestMapping(value="/imgBoard/delRep.do")
+	public ModelAndView delete_rep(@RequestParam(value="num") int num){
+		ModelAndView mav = new ModelAndView("imgBoard/writeRep");
+		int imgNum = repService.getRep(num).getImgNum();
 		repService.delImgrep(num);
-		return "redirect:/imgBoard/list.do";
+		ArrayList<ImgRep> list = repService.getAll(imgNum);
+		mav.addObject("list", list);
+		return mav;
 	}
 }

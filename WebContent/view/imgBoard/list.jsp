@@ -6,11 +6,45 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
 <title>이미지목록</title>
+<script type="text/javascript" src="${pageContext.request.contextPath}/view/join/httpRequest.js"></script>
 <script type="text/javascript">
-	function delete_rep(){
-		
+	var loginId = "";
+	function writeRep(f, num, writer) {
+		loginId = writer;
+		var param = "imgNum=" + num + "&content=" + f.content.value + 
+					"&writer=" + writer;
+		f.content.value="";
+		sendRequest("${pageContext.request.contextPath}/imgBoard/writeRep.do",
+				param, writeRepResult, "POST");
 	}
-
+	function writeRepResult() {
+		if (httpRequest.readyState == 4) { // ajax에 데이터를 정상적으로 보냈을 때 (일종의 signal)
+			if (httpRequest.status == 200) { // 웹서버의 응답이 정상일때 ()
+				var str = httpRequest.responseText;
+				var reps = eval("(" + str + ")");
+				var imgNum = reps[0].imgNum;
+				var myDiv = document.getElementById("div_"+imgNum);
+				var html = "";
+				for(i=0; i<reps.length; i++){
+					html += reps[i].content + 
+					"(작성자:" + reps[i].writer + ")";
+					if(loginId==reps[i].writer){
+						html += "<input type='button' value='X' onclick ='delRep(" + reps[i].num + ",\"${sessionScope.id}\")'>";
+					}
+					html += "<br>";
+				}
+				myDiv.innerHTML = html;
+			}
+		}
+	}
+	
+	function delRep(num, writer) {
+		loginId = writer;
+		var param = "num=" + num;
+		sendRequest("${pageContext.request.contextPath}/imgBoard/delRep.do",
+				param, writeRepResult, "POST");
+	}
+		
 </script>
 </head>
 <body>
@@ -31,11 +65,10 @@
 		</tr>
 		<tr>
 			<td colspan="2">
-				<form name="f" action = "${pageContext.request.contextPath }/imgBoard/addrep.do">
+				<form action = "">
 					<input type="text" name="content">
-					<input type="hidden" name ="imgNum" value="${i.num }">
-					<input type="hidden" name ="writer" value="${sessionScope.id }">
-					<input type="submit" value="댓글작성">
+					<input type="button" value="댓글작성" 
+					onclick="writeRep(this.form,${i.num},'${sessionScope.id }')">
 				</form>
 			</td>
 		</tr>
@@ -43,8 +76,10 @@
 			<td colspan="2">
 				<div id="div_${i.num }">
 					<c:forEach var="r" items="${i.reps }">
-						${r.content }(작성자:${r.writer })
-						<input type="button" value="삭제" onclick = 'location.href="${pageContext.request.contextPath}/imgBoard/delete_rep.do?num=${r.num}"'> 
+							${r.content }(작성자:${r.writer })
+						<%-- <c:if test = "${sessionScope.id==r.writer }">
+							<input type="button" value="X" onclick = "delRep(${r.num}, '${sessionScope.id }')"> 
+						</c:if> --%>
 						<br>
 					</c:forEach>
 				</div>
